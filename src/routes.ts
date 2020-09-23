@@ -1,16 +1,16 @@
-import { Router } from 'express';
-import { indexController } from './components/index.controller';
+import { Router } from "express";
+import { indexController } from "./components/index.controller";
 
 class RegisterRoutes {
+  public router: Router = Router();
 
-    public router: Router = Router();
-
-    constructor() {
-         this.config();
-    }
-    config(): void {
-        this.router.get('/', indexController.index);
-    }
+  constructor() {
+    this.config();
+  }
+  config(): void {
+    this.router.get("/", indexController.api);
+    this.router.get("/download", indexController.api);
+  }
 }
 
 const registerRoutes = new RegisterRoutes();
