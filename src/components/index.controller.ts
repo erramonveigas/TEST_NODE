@@ -35,13 +35,6 @@ class IndexController {
       res.status(400).json("Querry params missing");
     }
   }
-
-  public async download(req: Request, res: Response) {
-    var filePath = "/my/file/path/..."; // Or format the path using the `id` rest param
-    var fileName = "report.pdf"; // The default name the browser will use
-
-    res.download(filePath, fileName);
-  }
 }
 
 export const indexController = new IndexController();

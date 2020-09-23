@@ -9,7 +9,6 @@ class RegisterRoutes {
   }
   config(): void {
     this.router.get("/", indexController.api);
-    this.router.get("/download", indexController.api);
   }
 }
 
