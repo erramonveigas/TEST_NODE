@@ -2,7 +2,7 @@
 
     Prueba técnica de desarrollo en NodeJS con typescript. 
 
-# Versión de NodeJS
+# Versión de NodeJS 
 
     La prueba esta pensada para Node v10.20.1.
 
