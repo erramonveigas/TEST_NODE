@@ -1,0 +1,10 @@
+{
+  "API_MOCS": {
+    "api1": {
+      "url": "https://mocks.free.beeceptor.com/api1"
+    },
+    "api2": {
+      "url": "https://mocks.free.beeceptor.com/api2"
+    }
+  }
+}

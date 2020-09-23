@@ -1,0 +1,15 @@
+node_modules
+build
+
+yarn.lock
+package-lock.json
+src/config/keys.ts
+
+/.idea
+/.vscode
+/!.vscode
+
+# Logs
+*.log.*
+*.log
+log/*
