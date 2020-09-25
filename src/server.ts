@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 const dotenv = require('dotenv');
 dotenv.config();  
-
+import { endpointsConfig } from './utils/enpoints-config.utils';
 import RegisterRoutes from './routes';
 
 class Server {
@@ -21,6 +21,7 @@ class Server {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
+    this.app.set('envConfig', endpointsConfig.getConfig());
   }
 
   routes(): void {
