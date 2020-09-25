@@ -4,6 +4,7 @@ build
 yarn.lock
 package-lock.json
 src/config/keys.ts
+src/outputs/*
 
 /.idea
 /.vscode

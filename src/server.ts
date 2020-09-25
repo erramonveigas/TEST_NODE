@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 const dotenv = require('dotenv');
 dotenv.config();  
-import { endpointsConfig } from './utils/enpoints-config.utils';
+import { endpointsConfig } from './utils/endpoints-config.utils';
 import RegisterRoutes from './routes';
 
 class Server {
