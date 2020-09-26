@@ -5,5 +5,5 @@ import * as pro from "./pro.json";
 
 const EnvironmentsArray = ["dev", "pre", "pro"]; // to check .env file
 type EnvTypes = "dev" | "pre" | "pro"; // strong type for the environments
-
-export { dev, pre, pro, EnvironmentsArray, EnvTypes };
+type ApiTypes = "api1" | "api2";
+export { dev, pre, pro, EnvironmentsArray, EnvTypes, ApiTypes };
