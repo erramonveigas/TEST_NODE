@@ -1,9 +1,11 @@
-import { cleanEnv, str, num, makeValidator } from "envalid";
+import { cleanEnv, num, makeValidator, bool } from "envalid";
 import * as config from "../config";
 
 interface EnvObject {
   PORT: number;
   NODE_ENV: string;
+  USEMOCK: boolean;
+  FILE_SIZE: number;
 }
 
 const validateEnvVars = makeValidator((env: string) => {
@@ -22,6 +24,8 @@ const getEnvVars = (): EnvObject => {
   const EnvVars = cleanEnv(process.env, {
     NODE_ENV: validateEnvVars(),
     PORT: num({ default: 3000 }),
+    USEMOCK: bool({ default: false }),
+    FILE_SIZE: num({ default: 999 }),
   });
 
   return EnvVars as EnvObject;
