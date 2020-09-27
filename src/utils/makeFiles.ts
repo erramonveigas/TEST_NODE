@@ -3,20 +3,9 @@ import { json2csvAsync } from "json-2-csv";
 import fs from "fs";
 import path from "path";
 
-import { api1Mock, api2Mock, api3Mock } from "../mock";
+import { api3Mock } from "../mock";
 import { EnvVars } from "../utils/validateEnv";
 
-interface Response {
-  index: number;
-  index_start_at: number;
-  integer: number;
-  float: number;
-  name: string;
-  surname: string;
-  fullname: string;
-  email: string;
-  bool: boolean;
-}
 export const MakeFiles = async (url: string, folder: string) => {
   let data: any[];
   let count = 0;
@@ -24,10 +13,12 @@ export const MakeFiles = async (url: string, folder: string) => {
 
   try {
     if (!EnvVars.USEMOCK) {
+      console.log(`Using the real api ${url}`);
       const response = await axios.get(url);
       data = response.data.items;
     } else {
-      data = api1Mock.items;
+      console.log(`Using the mock`);
+      data = api3Mock.items;
     }
 
     const dir = await prepareFolder(folder);
@@ -38,11 +29,13 @@ export const MakeFiles = async (url: string, folder: string) => {
       const csv = await json2csvAsync(tempArray, {
         expandArrayObjects: true,
       });
-      const file = await prepareFile(`${dir}/fichero${count + 1}.csv`);
+      const file = `${dir}/fichero${count + 1}.csv`;
 
       console.log(`Creating file: ${file}`);
       fs.writeFileSync(file, csv, { flag: "w" });
     }
+
+    console.log("Done creating the files");
   } catch (error) {
     console.log(error.message || "Not able to process files");
   }
@@ -50,30 +43,27 @@ export const MakeFiles = async (url: string, folder: string) => {
 
 const prepareFolder = async (folder: string): Promise<string> => {
   try {
-    const dir = path.join(__dirname, "../outputs/" + folder);
+    const dirOutputs = path.join(__dirname, "../outputs/");
+    const dirFile = dirOutputs + folder;
 
-    console.log(`Deleting folder ${folder}`);
-
-    fs.rmdirSync(dir, { recursive: true });
-
-    console.log(`Creating folder ${folder}`);
-    fs.mkdirSync(dir);
-
-    return dir;
-  } catch (error) {
-    throw { message: error.message || `not able to make the dir ${folder}` };
-  }
-};
-
-const prepareFile = async (file: string): Promise<string> => {
-  try {
-    if (fs.existsSync(file)) {
-      console.log(`Deleting file: ${file}`);
-      fs.unlinkSync(file);
+    // Create the outputs folder if it does not exists
+    if (!fs.existsSync(dirOutputs)) {
+      console.log(`Creating folder ${dirOutputs}`);
+      fs.mkdirSync(dirOutputs);
     }
 
-    return file;
+    // Delete the api folder if it exists to start clean
+    if (fs.existsSync(dirFile)) {
+      console.log(`Deleting folder ${dirFile}`);
+      fs.rmdirSync(dirFile, { recursive: true });
+    }
+
+    // create a brand new empty api folder
+    console.log(`Creating folder ${dirFile}`);
+    fs.mkdirSync(dirFile);
+
+    return dirFile;
   } catch (error) {
-    throw { message: error.message || `not able to make the file ${file}` };
+    throw { message: error.message || `not able to make the dir ${folder}` };
   }
 };

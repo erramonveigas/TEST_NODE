@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "tsc -w",
     "dev": "nodemon build/server.js",
-    "start:tsnode": "ts-node-dev --respawn --files src/server.ts"
+    "start:tsnode": "ts-node-dev --respawn --files src/server.ts",
+    "build": "rimraf build && tsc --build tsconfig.json"
   },
   "dependencies": {
     "axios": "^0.20.0",
