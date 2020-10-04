@@ -8,33 +8,12 @@ import { mngApp } from '../core/mngApp';
 const dotenv = require('dotenv').config({path: '.env'});
 
 
-
-//  Get environment mode and create aplicable config file path.
-let strEnvMode = process.env.NODE_ENV
-let strConfigRelativePath: string = "";
-
-console.log( `Environment mode: ${strEnvMode}` );
-
-switch( strEnvMode ) {
-    case 'pro':
-        strConfigRelativePath = "/src/config/pro.json";
-        break;
-    
-    default:
-    case 'dev':
-    strConfigRelativePath = "/src/config/pre.json";
-        break;
-    
-}
-
-//  Create full path from relative path (project path + relative path)
-let strConfigFullPath = process.cwd() + strConfigRelativePath;
-console.log(`Full path of configuration file: ${strConfigFullPath}`);
-
-//  Require config file (In Json format)
-var objConfig = require( strConfigFullPath );
+console.log( `Environment mode: ${ mngApp.getEnvironmentMode() }` );
+console.log( `Full path of configuration file: ${ mngApp.getConfigFileFullPath() }` );
 
 
+//  Require config object
+var objConfig = mngApp.getEfectiveConfigObject();
 
 //  Example how to access an element
 //console.log( objConfig.API_MOCS['api1'].url );

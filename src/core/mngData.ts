@@ -2,7 +2,7 @@
 // -----------------------------------
 var fs = require('fs');
 const axios = require("axios");
-
+const { parse } = require('json2csv');
 
 export class mngData {
   
@@ -90,10 +90,31 @@ export class mngData {
             objData: any - Content to save in file.
         Return: any
     */
-    async writeDataFromParam( strPathFile: string, objData: any ) {
-        let data = await JSON.stringify( objData );
-        await fs.writeFileSync( strPathFile, data);
+    async writeJSONDataFromParam( strPathFile: string, objData: any ) {
+        let strData = await JSON.stringify( objData );
+        await fs.writeFileSync( strPathFile, strData);
     }
+  
+  
+    async writeDataFromParam( strPathFile: string, strData: any ) {
+        await fs.writeFileSync( strPathFile, strData);
+    }
+  
+    
+    async JsonToCsv( arrLstRegs: any, arrLstKeys: any[] ) {
+        const opts = { arrLstKeys };
+        let strCsv = "";
+
+        try {
+            strCsv = parse( arrLstRegs, opts);
+            console.log( strCsv );
+        } catch (err) {
+            console.error(err);
+        }
+      
+        return strCsv;
+    }
+    
   
     //  ----------------------------------------------------
     

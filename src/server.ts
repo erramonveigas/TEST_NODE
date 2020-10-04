@@ -4,9 +4,11 @@ import cors from 'cors';
 const dotenv = require('dotenv');
 dotenv.config();  
 
+
 // ---- Javier Sánchez 10-03-2020 ----
 // -----------------------------------
-  import { mngData } from './core/mngData';
+import { mngData } from './core/mngData';
+import { mngApp } from './core/mngApp';
 // -----------------------------------
 
 
@@ -53,6 +55,13 @@ class Server {
     }
     
     
+    
+    
+/*
+    var objConfig = mngApp.getEfectiveConfigObject();
+    console.log( objConfig.API_MOCS['api1'].url );
+    
+    
     try {
         objFullData = await this.objMngData.readDataFromSource( "https://mocks.free.beeceptor.com/api1" );
         //console.log( objFullData );
@@ -67,19 +76,39 @@ class Server {
     let numChunksDataLength = 999;
     for( let k = 0, numChuck = 0; k < numAllDataLength; k += numChunksDataLength, numChuck++ ) {
         let objDataSlice = this.objMngData.sliceData( objFullData, k, numChunksDataLength );
-        console.log( objDataSlice );
+        //console.log( objDataSlice );
+      
+        //  CREAR DIRECTORIO DENTRO DE DATA SI NO EXISTE
       
       
-        let strOutFilePath = `./data/aaa_${numChuck}.json`;
+      
+      
+      
+        let strCsvContent = this.objMngData.JsonToCsv(
+            objDataSlice.rows,
+            ['field1', 'field2', 'field3']
+        );
+        //console.log( strCsvContent );
+      
+      
+      
+        let strOutCSVFilePath = `./src/outputs/aaa_${numChuck}.csv`;
+        let strOutJSONFilePath = `./src/outputs/aaa_${numChuck}.json`;
         try {
-            await this.objMngData.writeDataFromParam( strOutFilePath, objDataSlice );
+            await this.objMngData.writeDataFromParam( strOutCSVFilePath, strCsvContent );
+            //await this.objMngData.writeJSONDataFromParam( strOutJSONFilePath, objDataSlice );
         } catch (error) {
             console.log("Error: an error occurred while trying to write the data results.");
             console.error(error);
             process.exit(-1);
         }
-        
     }
+*/
+    
+    
+   
+    
+    
     // -----------------------------------
     
     
