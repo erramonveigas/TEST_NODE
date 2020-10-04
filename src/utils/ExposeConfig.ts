@@ -1,3 +1,5 @@
+// ---- Javier Sánchez 10-03-2020 ----
+// -----------------------------------
 /*
     tsc && node build/utils/ExposeConfig
 */
@@ -41,3 +43,6 @@ console.log( objConfig );
 
 console.log("\n\nConfiguration file content in TABLE format: ");
 console.table( objConfig.API_MOCS );
+
+
+// -----------------------------------

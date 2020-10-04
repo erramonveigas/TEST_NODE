@@ -44,9 +44,16 @@ class Server {
     await this.objMngData.cleanDir( strFullPath );
     
     let objFullData = await this.objMngData.readDataFromSource( "https://mocks.free.beeceptor.com/api1" );
-    console.log( objFullData );
-    let arrLstSlice = this.objMngData.sliceData( objFullData.items, 100, 2 );
-    await this.objMngData.writeDataFromParam( "./data/aaa.json", arrLstSlice );
+    //console.log( objFullData );
+    
+    let numAllDataLength = this.objMngData.getLengthData( objFullData );
+    let numChunksDataLength = 999;
+    for( let k = 0; k < numAllDataLength; k += numChunksDataLength ) {
+        let objDataSlice = this.objMngData.sliceData( objFullData, k, numChunksDataLength );
+        console.log( objDataSlice );
+      
+        await this.objMngData.writeDataFromParam( "./data/aaa.json", objDataSlice );
+    }
     // -----------------------------------
     
     
