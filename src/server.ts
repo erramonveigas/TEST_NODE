@@ -39,20 +39,46 @@ class Server {
   async start() {
     // ---- Javier Sánchez 10-03-2020 ----
     // -----------------------------------
+    let objFullData = {};
+    
+    
     // Destination path of the files loaded from .env file
     var strFullPath = process.cwd() + "/" + process.env.DATA_PATH;
-    await this.objMngData.cleanDir( strFullPath );
+    try {
+        await this.objMngData.cleanDir( strFullPath );
+    } catch (error) {
+        console.log("Error: an error occurred while trying to clean data directory.");
+        console.error(error);
+        process.exit(-1);
+    }
     
-    let objFullData = await this.objMngData.readDataFromSource( "https://mocks.free.beeceptor.com/api1" );
-    //console.log( objFullData );
+    
+    try {
+        objFullData = await this.objMngData.readDataFromSource( "https://mocks.free.beeceptor.com/api1" );
+        //console.log( objFullData );
+    } catch (error) {
+        console.log("Error: an error occurred while trying to read the data from source service.");
+        console.error(error);
+        process.exit(-1);
+    }
+    
     
     let numAllDataLength = this.objMngData.getLengthData( objFullData );
     let numChunksDataLength = 999;
-    for( let k = 0; k < numAllDataLength; k += numChunksDataLength ) {
+    for( let k = 0, numChuck = 0; k < numAllDataLength; k += numChunksDataLength, numChuck++ ) {
         let objDataSlice = this.objMngData.sliceData( objFullData, k, numChunksDataLength );
         console.log( objDataSlice );
       
-        await this.objMngData.writeDataFromParam( "./data/aaa.json", objDataSlice );
+      
+        let strOutFilePath = `./data/aaa_${numChuck}.json`;
+        try {
+            await this.objMngData.writeDataFromParam( strOutFilePath, objDataSlice );
+        } catch (error) {
+            console.log("Error: an error occurred while trying to write the data results.");
+            console.error(error);
+            process.exit(-1);
+        }
+        
     }
     // -----------------------------------
     
@@ -66,30 +92,3 @@ class Server {
 
 const server = new Server();
 module.exports = server.start();
-
-
-
-
-
-
-
-/*
-const request = require('request');
-
-let url = "https://mocks.free.beeceptor.com/api1";
-
-let options = {json: true};
-
-
-
-request(url, options, (error: any, res: any, body: any) => {
-    if (error) {
-        return  console.log(error)
-    };
-
-    if (!error && res.statusCode == 200) {
-        // do something with JSON, using the 'body' variable
-      console.log( res );
-    };
-});
-*/

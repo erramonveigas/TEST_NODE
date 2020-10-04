@@ -3,6 +3,7 @@
 /*
     tsc && node build/utils/ExposeConfig
 */
+import { mngApp } from '../core/mngApp';
 
 const dotenv = require('dotenv').config({path: '.env'});
 
