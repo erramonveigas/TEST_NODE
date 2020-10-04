@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { indexController } from './components/index.controller';
+import { monthlyDumpController } from './components/monthly-dump/monthly-dump.controller';
 
 class RegisterRoutes {
 
@@ -8,8 +8,9 @@ class RegisterRoutes {
     constructor() {
          this.config();
     }
+    //Modificar el routing
     config(): void {
-        this.router.get('/', indexController.index);
+        this.router.get('/', monthlyDumpController.index);
     }
 }
 
