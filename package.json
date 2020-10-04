@@ -8,10 +8,12 @@
     "dev": "nodemon build/server.js"
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "concurrently": "^3.5.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.7",

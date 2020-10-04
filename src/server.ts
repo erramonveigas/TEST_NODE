@@ -6,7 +6,7 @@ dotenv.config();
 
 // ---- Javier Sánchez 10-03-2020 ----
 // -----------------------------------
-var fs = require('fs');
+  import { mngData } from './core/mngData';
 // -----------------------------------
 
 
@@ -14,6 +14,8 @@ import RegisterRoutes from './routes';
 
 class Server {
   public app: Application;
+  private objMngData = new mngData();
+  
 
   constructor() {
     this.app = express();
@@ -33,7 +35,20 @@ class Server {
     this.app.use('/', RegisterRoutes);
   }
 
-  start() {
+  
+  async start() {
+    // ---- Javier Sánchez 10-03-2020 ----
+    // -----------------------------------
+    // Destination path of the files loaded from .env file
+    var strFullPath = process.cwd() + "/" + process.env.DATA_PATH;
+    await this.objMngData.cleanDir( strFullPath );
+    
+    let objFullData = await this.objMngData.readDataFromSource( "https://mocks.free.beeceptor.com/api1" );
+    console.log( objFullData );
+    let arrLstSlice = this.objMngData.sliceData( objFullData.items, 100, 2 );
+    await this.objMngData.writeDataFromParam( "./data/aaa.json", arrLstSlice );
+    // -----------------------------------
+    
     
     return this.app.listen(this.app.get('port'), () => {
       console.log('Server on port:', this.app.get('port'));
@@ -44,34 +59,30 @@ class Server {
 
 const server = new Server();
 module.exports = server.start();
-  
 
 
-// ---- Javier Sánchez 10-03-2020 ----
-// -----------------------------------
-// Destination path of the files loaded from .env file
-  
-////////////////////////////////////////////////////////////////////////////////
-/*  OJO Cada bloque de ficheros generado tiene que quedarse en una carpeta fija e independiente
-    para que la herramienta de dashboarding las recupere de una ruta concreta.
-    
-    Al ser un proceso mensual, cada vez que se inicie el proceso se ha de vaciar la carpeta.
-*/
-var strFullPath = process.cwd() + "/" + process.env.DATA_PATH;
- 
-fs.readdir( strFullPath, function( err: any, arrLstFiles: any ) {
-    for (var i=0; i < arrLstFiles.length; i++) {
-        let strFilePath: string = strFullPath + arrLstFiles[i];
-      
-        console.log( "Deleting file: " + strFilePath );
 
-        try {
-            fs.unlinkSync( strFilePath );
-            //file removed
-        } catch(err) {
-            console.error(err)
-        }
-    }
+
+
+
+
+/*
+const request = require('request');
+
+let url = "https://mocks.free.beeceptor.com/api1";
+
+let options = {json: true};
+
+
+
+request(url, options, (error: any, res: any, body: any) => {
+    if (error) {
+        return  console.log(error)
+    };
+
+    if (!error && res.statusCode == 200) {
+        // do something with JSON, using the 'body' variable
+      console.log( res );
+    };
 });
-// -----------------------------------
- 
+*/
