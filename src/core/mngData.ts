@@ -4,6 +4,13 @@ var fs = require('fs');
 const axios = require("axios");
 const { parse } = require('json2csv');
 
+// ---- Javier Sánchez 10-03-2020 ----
+// -----------------------------------
+import { mngApp } from '../core/mngApp';
+// -----------------------------------
+
+
+
 export class mngData {
   
   
@@ -115,6 +122,56 @@ export class mngData {
         return strCsv;
     }
     
+  
+    //  ----------------------------------------------------
+  
+  
+    async getSliceAndChangeFormat( strApiV: string ) {
+        let objFullData = {};
+        var objConfig = mngApp.getEfectiveConfigObject();
+        
+
+        let strApiUrl = objConfig.API_MOCS[ strApiV ].url;
+        console.log( "API url: " + objConfig.API_MOCS[ strApiV ].url );
+        try {
+            objFullData = await this.readDataFromSource( strApiUrl );
+            //console.log( objFullData );
+        } catch (error) {
+            console.log("Error: an error occurred while trying to read the data from source service.");
+            console.error(error);
+            process.exit(-1);
+        }
+
+
+        let numAllDataLength = this.getLengthData( objFullData );
+        let numChunksDataLength = 999;
+        for( let k = 0, numChuck = 0; k < numAllDataLength; k += numChunksDataLength, numChuck++ ) {
+            let objDataSlice = this.sliceData( objFullData, k, numChunksDataLength );
+            //console.log( objDataSlice );
+
+            //  CREAR DIRECTORIO DENTRO DE DATA SI NO EXISTE
+
+
+            let strCsvContent = this.JsonToCsv(
+                objDataSlice.rows,
+                ['field1', 'field2', 'field3']
+            );
+            //console.log( strCsvContent );
+
+
+            let strOutCSVFilePath = `./src/outputs/aaa_${numChuck}.csv`;
+            let strOutJSONFilePath = `./src/outputs/aaa_${numChuck}.json`;
+            try {
+                await this.writeDataFromParam( strOutCSVFilePath, strCsvContent );
+                //await this.writeJSONDataFromParam( strOutJSONFilePath, objDataSlice );
+            } catch (error) {
+                console.log("Error: an error occurred while trying to write the data results.");
+                console.error(error);
+                process.exit(-1);
+            }
+        }
+      
+    }
   
     //  ----------------------------------------------------
     

@@ -20,20 +20,7 @@ export class mngApp {
   
   
     static getConfigFileFullPath() {
-        let strConfigPath: string = "";
-      
-        switch( mngApp.getEnvironmentMode() ) {
-            case 'pro':
-                strConfigPath = "/src/config/pro.json";
-                break;
-
-            default:
-            case 'dev':
-            strConfigPath = "/src/config/pre.json";
-                break;
-        }
-      
-        return this.getProjectFullPath() + strConfigPath;
+        return this.getProjectFullPath() + `/src/config/${ mngApp.getEnvironmentMode() }.json`;
     }
   
   
