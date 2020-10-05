@@ -13,4 +13,3 @@ src/config/keys.ts
 *.log.*
 *.log
 log/*
-src/outputs/*

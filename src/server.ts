@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import fs from 'fs';
 const dotenv = require('dotenv');
 dotenv.config();  
 
@@ -47,6 +48,16 @@ class Server {
         await this.objMngData.cleanDir( strFullPath );
     } catch (error) {
         console.log("Error: an error occurred while trying to clean data directory.");
+        console.error(error);
+        process.exit(-1);
+    }
+    
+    try {
+        if( !fs.existsSync( strFullPath ) ) {
+            await fs.promises.mkdir( strFullPath );
+        }
+    } catch (error) {
+        console.log("Error: an error occurred while trying to create data directory.");
         console.error(error);
         process.exit(-1);
     }
