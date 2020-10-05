@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { indexController } from './components/index.controller';
-import { apiController } from './components/api.controller';
+import { apiController } from './components/apiComponent/api.controller';
+
 
 class RegisterRoutes {
 

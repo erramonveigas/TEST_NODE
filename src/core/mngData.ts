@@ -90,9 +90,9 @@ export class mngData {
   
   
     /*
-        async writeDataFromParam( strPathFile: string, objData: any )
+        async writeJSONDataFromParam( strPathFile: string, objData: any )
         
-        Write content to file.
+        Write JSON content to file.
         
         Params:
             strPathFile: String - File path to save content.
@@ -105,18 +105,37 @@ export class mngData {
     }
   
   
-    async writeDataFromParam( strPathFile: string, strData: any ) {
+    /*
+        async writeDataFromParam( strPathFile: string, objData: any )
+        
+        Write text content to file.
+        
+        Params:
+            strPathFile: String - File path to save content.
+            strData: string - Content to save in file.
+        Return: any
+    */
+    async writeDataFromParam( strPathFile: string, strData: string ) {
         await fs.writeFileSync( strPathFile, strData);
     }
   
     
-    JsonToCsv( arrLstRegs: any, arrLstKeys: any[] ) {
+    /*
+        JsonToCsv( arrLstRegs: any, arrLstKeys: any[] )
+        
+        Convert JSON array to CSV data format
+        
+        Parameters:
+            arrLstRegs: any[] - Array of registers.
+            arrLstKeys: any[] - Array of fields to create CSV. (CSV columns)
+    */
+    JsonToCsv( arrLstRegs: any[], arrLstKeys: any[] ) {
         const opts = { arrLstKeys };
         let strCsv = "";
 
         try {
             strCsv = parse( arrLstRegs, opts);
-            console.log( strCsv );
+            //console.log( strCsv );
         } catch (err) {
             console.error(err);
         }
@@ -156,6 +175,7 @@ export class mngData {
             process.exit(-1);
         }
 
+      
       
         try {
             await fs.promises.mkdir( strOutPath );
@@ -215,7 +235,7 @@ export class mngData {
                 console.log( "Deleting: " + strFilePath );
 
                 try {
-                    return await rimraf.sync( strFullPath );
+                    return await rimraf.sync( strFilePath );
                     //file removed
                 } catch(err) {
                     console.error(err)
