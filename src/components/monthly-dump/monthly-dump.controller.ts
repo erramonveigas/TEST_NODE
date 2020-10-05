@@ -8,9 +8,9 @@ class MonthlyDumpController {
             const amProperties = apiMocs.getProperties();
             const api = req.query['api'] as string;
             if(!api || amProperties[api] === undefined){
-                res.status(500).send({error: "Invalid api request parameter"});
+                throw "Invalid api request parameter";
             }else{
-                dump(api, amProperties[api].url);
+                await dump(api, amProperties[api].url);
             }
             res.status(200).send({success: "Monthly dump done"});
         } catch (err) {
