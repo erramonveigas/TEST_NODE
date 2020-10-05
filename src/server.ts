@@ -1,7 +1,6 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import fs from 'fs';
 const dotenv = require('dotenv');
 dotenv.config();  
 
@@ -39,31 +38,7 @@ class Server {
   }
 
   
-  async start() {
-    // ---- Javier Sánchez 10-03-2020 ----
-    // -----------------------------------
-    // Destination path of the files loaded from .env file
-    var strFullPath = process.cwd() + "/" + process.env.DATA_PATH;
-    try {
-        await this.objMngData.cleanDir( strFullPath );
-    } catch (error) {
-        console.log("Error: an error occurred while trying to clean data directory.");
-        console.error(error);
-        process.exit(-1);
-    }
-        
-    try {
-        if( !fs.existsSync( strFullPath ) ) {
-            await fs.promises.mkdir( strFullPath );
-        }
-    } catch (error) {
-        console.log("Error: an error occurred while trying to create data directory.");
-        console.error(error);
-        process.exit(-1);
-    }
-    // -----------------------------------
-    
-    
+  async start() {    
     return this.app.listen(this.app.get('port'), () => {
       console.log('Server on port:', this.app.get('port'));
       console.log(`Enviroment: ${process.env.NODE_ENV}`); 

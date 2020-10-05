@@ -1,4 +1,5 @@
 var fs = require('fs');
+var rimraf = require('rimraf');
 
 import { Request, Response } from 'express';
 
@@ -24,28 +25,40 @@ class ApiUtils {
             none
     */
     async getSliceAndChangeFormat( strApiV: string ) {
+        let objMngData = new mngData();
         let objFullData = {};
-        var objConfig = mngApp.getEfectiveConfigObject();
-        let strOutPath = mngApp.getProjectFullPath() + `/src/outputs/${strApiV}/`;
+        let objConfig = mngApp.getEfectiveConfigObject();
+      
+        // Destination path of the files loaded from .env file
+        let strOutPath = process.cwd() + "/" + process.env.DATA_PATH + strApiV + "/";
         
+
+        try {
+            return await rimraf.sync( strOutPath );
+            //file removed
+        } catch(err) {
+            console.error(err)
+        }
+      
+
+        try {
+            if( !fs.existsSync( strOutPath ) ) {
+                await fs.promises.mkdir( strOutPath );
+            }
+        } catch (error) {
+            console.log("Error: an error occurred while trying to create data directory.");
+            console.error(error);
+            process.exit(-1);
+        }
+      
 
         let strApiUrl = objConfig.API_MOCS[ strApiV ].url;
         console.log( "API url: " + objConfig.API_MOCS[ strApiV ].url );
         try {
-            objFullData = await this.objMngData.readDataFromSource( strApiUrl );
+            objFullData = await objMngData.readDataFromSource( strApiUrl );
             //console.log( objFullData );
         } catch (error) {
             console.log("Error: an error occurred while trying to read the data from source service.");
-            console.error(error);
-            process.exit(-1);
-        }
-
-      
-      
-        try {
-            await fs.promises.mkdir( strOutPath );
-        } catch (error) {
-            console.log("Error: an error occurred while trying to create data directory.");
             console.error(error);
             process.exit(-1);
         }
@@ -54,11 +67,11 @@ class ApiUtils {
         let numAllDataLength = this.objMngData.getLengthData( objFullData );
         let numChunksDataLength = 999;
         for( let k = 0, numChuck = 0; k < numAllDataLength; k += numChunksDataLength, numChuck++ ) {
-            let objDataSlice = this.objMngData.sliceData( objFullData, k, numChunksDataLength );
+            let objDataSlice = objMngData.sliceData( objFullData, k, numChunksDataLength );
             //console.log( objDataSlice );
 
 
-            let strCsvContent = this.objMngData.JsonToCsv(
+            let strCsvContent = objMngData.JsonToCsv(
                 objDataSlice.items,
                 ["index", "index_start_at", "integer", "float", "name", "surname", "fullname", "email", "bool"]
             );
@@ -69,15 +82,14 @@ class ApiUtils {
             let strOutJSONFilePath = strOutPath + `/aaa_${numChuck}.json`;
 
             try {
-                await this.objMngData.writeDataFromParam( strOutCSVFilePath, strCsvContent );
-                //await this.objMngData.writeJSONDataFromParam( strOutJSONFilePath, objDataSlice );
+                await objMngData.writeDataFromParam( strOutCSVFilePath, strCsvContent );
+                //await objMngData.writeJSONDataFromParam( strOutJSONFilePath, objDataSlice );
             } catch (error) {
                 console.log("Error: an error occurred while trying to write the data results.");
                 console.error(error);
                 process.exit(-1);
             }
         }
-
     }
   
   

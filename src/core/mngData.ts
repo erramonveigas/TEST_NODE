@@ -142,36 +142,7 @@ export class mngData {
       
         return strCsv;
     }
-    
-  
-    //  ----------------------------------------------------
-    
-  
-    /*
-        async cleanDir( strFullPath: String )
-        
-        Delete all content of a dir path
-        
-        Params:
-            strFullPath: String - Directory path to clean
-        Return: any
-    */
-    async cleanDir( strFullPath: String ) {
-        fs.readdir( strFullPath, async function( err: any, arrLstFiles: any ) {
-            for (var i=0; i < arrLstFiles.length; i++) {
-                let strFilePath: string = strFullPath + arrLstFiles[i];
 
-                console.log( "Deleting: " + strFilePath );
-
-                try {
-                    return await rimraf.sync( strFilePath );
-                    //file removed
-                } catch(err) {
-                    console.error(err)
-                }
-            }
-        });
-    }
   
   
 }

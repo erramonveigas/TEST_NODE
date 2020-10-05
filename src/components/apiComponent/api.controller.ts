@@ -1,13 +1,11 @@
-
 import { Request, Response } from 'express';
+import fs from 'fs';
 
-import { mngData } from '../../core/mngData';
 import { apiUtils } from './api.utils';
 
 
 
 class ApiController {
-    private objMngData = new mngData();
 
     public async index(req: Request, res: Response) {
         let strApiParam: string = req.query.api.toString();
