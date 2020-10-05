@@ -3,7 +3,6 @@
 var fs = require('fs');
 const axios = require("axios");
 const { parse } = require('json2csv');
-var rimraf = require('rimraf');
 
 
 // ---- Javier Sánchez 10-03-2020 ----
