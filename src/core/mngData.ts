@@ -108,7 +108,7 @@ export class mngData {
     }
   
     
-    async JsonToCsv( arrLstRegs: any, arrLstKeys: any[] ) {
+    JsonToCsv( arrLstRegs: any, arrLstKeys: any[] ) {
         const opts = { arrLstKeys };
         let strCsv = "";
 
@@ -147,20 +147,22 @@ export class mngData {
         let numChunksDataLength = 999;
         for( let k = 0, numChuck = 0; k < numAllDataLength; k += numChunksDataLength, numChuck++ ) {
             let objDataSlice = this.sliceData( objFullData, k, numChunksDataLength );
-            //console.log( objDataSlice );
+            console.log( objDataSlice );
 
             //  CREAR DIRECTORIO DENTRO DE DATA SI NO EXISTE
+            //  await fs.mkdir(path);
 
 
             let strCsvContent = this.JsonToCsv(
-                objDataSlice.rows,
-                ['field1', 'field2', 'field3']
+                objDataSlice.items,
+                ["index", "index_start_at", "integer", "float", "name", "surname", "fullname", "email", "bool"]
             );
             //console.log( strCsvContent );
 
 
-            let strOutCSVFilePath = `./src/outputs/aaa_${numChuck}.csv`;
-            let strOutJSONFilePath = `./src/outputs/aaa_${numChuck}.json`;
+            let strOutCSVFilePath = mngApp.getProjectFullPath() + `/src/outputs/aaa_${numChuck}.csv`;
+            let strOutJSONFilePath = mngApp.getProjectFullPath() + `/src/outputs/aaa_${numChuck}.json`;
+
             try {
                 await this.writeDataFromParam( strOutCSVFilePath, strCsvContent );
                 //await this.writeJSONDataFromParam( strOutJSONFilePath, objDataSlice );

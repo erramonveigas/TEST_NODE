@@ -70,3 +70,37 @@
         - Recupere los datos de cada api.
         - Teniendo en cuenta la limitación de 999 líneas por fichero, almacene los datos en formato csv en sus correspondientes rutas dentro de .src/outputs/.
         - Vacíe su correspondiente carpeta al iniciar el proceso.
+
+
+
+
+$ tsc && node build/server
+$ tsc && node build/utils/ExposeConfig
+
+
+
+
+cabox@WebProxyfy:~/workspace/TEST_NODE$ tsc && node build/utils/ExposeConfig
+Environment mode: dev
+Full path of configuration file: /home/cabox/workspace/TEST_NODE/src/config/dev.json
+
+
+Configuration file content in JSON format:
+{ API_MOCS:
+   { api1: { url: 'https://mocks.free.beeceptor.com/api1' },
+     api2: { url: 'https://mocks.free.beeceptor.com/api2' } } }
+
+
+Configuration file content in TABLE format:
+┌─────────┬─────────────────────────────────────────┐
+│ (index) │                   url                   │
+├─────────┼─────────────────────────────────────────┤
+│  api1   │ 'https://mocks.free.beeceptor.com/api1' │
+│  api2   │ 'https://mocks.free.beeceptor.com/api2' │
+└─────────┴─────────────────────────────────────────┘
+cabox@WebProxyfy:~/workspace/TEST_NODE$
+        
+        
+cabox@WebProxyfy:~/workspace/TEST_NODE$ tsc && node build/server
+Server on port: 3000
+Enviroment: dev

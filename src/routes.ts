@@ -10,8 +10,9 @@ class RegisterRoutes {
          this.config();
     }
     config(): void {
-        this.router.get('/', indexController.index);
-        this.router.get('/?api=:api', apiController.index);
+        this.router.get('/', apiController.index);
+      
+        //this.router.get('/', indexController.index);
     }
 }
 

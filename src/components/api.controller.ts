@@ -10,9 +10,16 @@ class ApiController {
 
     public async index(req: Request, res: Response) {
         let objMngData = new mngData();
-        await objMngData.getSliceAndChangeFormat( req.params.api );
+        let strApiParam: string = req.query.api.toString();
+      
+        try {
+            await objMngData.getSliceAndChangeFormat( strApiParam );
+        } catch( error ) {
+            res.json( {strStatus: "Error"} );
+        }
 
-        res.json( req.params.api );
+        //res.json( req.params.api );
+        res.json( req.query );
     }
 }
 
