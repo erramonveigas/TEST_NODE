@@ -10,9 +10,12 @@ class RegisterRoutes {
          this.config();
     }
     config(): void {
-        this.router.get('/', apiController.index);
+        //  Javier Sánchez 10-03-2020 - Filter controllers by params not implemented
+        // -----------------------------------
+        this.router.get('/', apiController.index);    //  Manage all / requests but need be implemented to mmanage only ?api=api1
+        // -----------------------------------
       
-        //this.router.get('/', indexController.index);
+        this.router.get('/', indexController.index);
     }
 }
 

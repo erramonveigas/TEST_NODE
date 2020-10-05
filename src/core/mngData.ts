@@ -3,6 +3,8 @@
 var fs = require('fs');
 const axios = require("axios");
 const { parse } = require('json2csv');
+var rimraf = require('rimraf');
+
 
 // ---- Javier Sánchez 10-03-2020 ----
 // -----------------------------------
@@ -125,10 +127,22 @@ export class mngData {
   
     //  ----------------------------------------------------
   
-  
+    /*
+        getSliceAndChangeFormat( strApiV: string )
+        
+        Main logic method to slice full data in chunks (blocks of X registers),
+        change data format from json to csv and save theese chunks in files.
+        
+        Parameters: 
+            strApiV: string - tag API url to use from configuration activelly.
+            
+        Returns:
+            none
+    */
     async getSliceAndChangeFormat( strApiV: string ) {
         let objFullData = {};
         var objConfig = mngApp.getEfectiveConfigObject();
+        let strOutPath = mngApp.getProjectFullPath() + `/src/outputs/${strApiV}/`;
         
 
         let strApiUrl = objConfig.API_MOCS[ strApiV ].url;
@@ -142,15 +156,21 @@ export class mngData {
             process.exit(-1);
         }
 
+      
+        try {
+            await fs.promises.mkdir( strOutPath );
+        } catch (error) {
+            console.log("Error: an error occurred while trying to create data directory.");
+            console.error(error);
+            process.exit(-1);
+        }
+      
 
         let numAllDataLength = this.getLengthData( objFullData );
         let numChunksDataLength = 999;
         for( let k = 0, numChuck = 0; k < numAllDataLength; k += numChunksDataLength, numChuck++ ) {
             let objDataSlice = this.sliceData( objFullData, k, numChunksDataLength );
-            console.log( objDataSlice );
-
-            //  CREAR DIRECTORIO DENTRO DE DATA SI NO EXISTE
-            //  await fs.mkdir(path);
+            //console.log( objDataSlice );
 
 
             let strCsvContent = this.JsonToCsv(
@@ -160,8 +180,8 @@ export class mngData {
             //console.log( strCsvContent );
 
 
-            let strOutCSVFilePath = mngApp.getProjectFullPath() + `/src/outputs/aaa_${numChuck}.csv`;
-            let strOutJSONFilePath = mngApp.getProjectFullPath() + `/src/outputs/aaa_${numChuck}.json`;
+            let strOutCSVFilePath = strOutPath + `/aaa_${numChuck}.csv`;
+            let strOutJSONFilePath = strOutPath + `/aaa_${numChuck}.json`;
 
             try {
                 await this.writeDataFromParam( strOutCSVFilePath, strCsvContent );
@@ -172,7 +192,7 @@ export class mngData {
                 process.exit(-1);
             }
         }
-      
+
     }
   
     //  ----------------------------------------------------
@@ -192,10 +212,10 @@ export class mngData {
             for (var i=0; i < arrLstFiles.length; i++) {
                 let strFilePath: string = strFullPath + arrLstFiles[i];
 
-                console.log( "Deleting file: " + strFilePath );
+                console.log( "Deleting: " + strFilePath );
 
                 try {
-                    await fs.unlinkSync( strFilePath );
+                    return await rimraf.sync( strFullPath );
                     //file removed
                 } catch(err) {
                     console.error(err)
