@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application } from "express";
 import morgan from 'morgan';
 import cors from 'cors';
 const dotenv = require('dotenv');
@@ -17,10 +17,13 @@ class Server {
 
   config(): void {
     this.app.set('port', process.env.PORT || 3000);
-    this.app.use(morgan('dev'));
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
+
+    const environment = process.env.NODE_ENV || 'dev';
+    this.app.set("config", require(`./config/${environment}.json`));
+    
   }
 
   routes(): void {

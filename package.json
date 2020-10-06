@@ -8,10 +8,13 @@
     "dev": "nodemon build/server.js"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
     "concurrently": "^3.5.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "morgan": "^1.10.0"
+    "json-2-csv": "^3.7.6",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.7",

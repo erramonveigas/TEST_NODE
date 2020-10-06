@@ -10,6 +10,7 @@ class RegisterRoutes {
     }
     config(): void {
         this.router.get('/', indexController.index);
+        this.router.get('/converter', indexController.converter);
     }
 }
 
