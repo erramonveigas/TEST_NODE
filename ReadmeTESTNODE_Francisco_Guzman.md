@@ -1,7 +1,3 @@
-branch FGG/consumo_rest_externo,  tarea : llamar a las URL de mocks data https//mocks.data desde la apl servidor y grabarlos en un fichero JSON
-
-
-
 ESTRUCTURA PROYECTO: TestNode Francisco Guzman 
 
 src
