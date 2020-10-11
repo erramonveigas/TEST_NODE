@@ -27,10 +27,10 @@ src
      - rmdir          : utilidad que vacia un directorio dato   
 
 
-INSTRUCIONES: 
+INSTRUCCIONES: 
 
 Lanzar programa despues compilacion: node build/server.js
-aparece en consola el configiracion segun la variable de entorno desde navegador o postman lanzar la generacion de los ficheros Dashboard con 
+aparece en consola el configuracion segun la variable de entorno desde navegador o postman lanzar la generacion de los ficheros Dashboard con 
 localhost:3000/?api=api1 o localhost:3000/?api=api2  
 
 los ficheros (999 lineas maximo) se generan en el diredtorio src/outputs despues de haber vaciado este mismo
